@@ -56,7 +56,7 @@ public class AuthorizeController {
             user.setMgtModified(System.currentTimeMillis());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setAvatarUrl(githubUser.getAvatar_url());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             userMapper.inster(user);
             response.addCookie(new Cookie("token",token));
 
