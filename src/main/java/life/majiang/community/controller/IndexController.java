@@ -32,9 +32,10 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model,
-    @RequestParam(name="page",defaultValue = "1") Integer page,
-    @RequestParam(name="size",defaultValue = "2") Integer size
-    ) {
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "2") Integer size
+    )
+    {
 
         Cookie[] cookies = request.getCookies();
         if (null != cookies) {
@@ -42,18 +43,18 @@ public class IndexController {
                 if (cookie.getName().equals("token")) {
                     User user = userMapper.findByToken(cookie.getValue());
                     if (user != null) {
-        request.getSession().setAttribute("user", user);
+                        request.getSession().setAttribute("user", user);
+                    }
+                    break;
+                }
+            }
         }
-        break;
-        }
-        }
-        }
-        PaginationDTO pagination = questionService.list(page,size);
+        PaginationDTO pagination = questionService.list(page, size);
 
         model.addAttribute("pagination", pagination);
 
         System.out.println("------哈哈哈哈哈哈    555-------------");
         return "index";
-        }
+    }
 
-        }
+}

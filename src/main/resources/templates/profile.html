@@ -2,21 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="zh-CN">
 <head>
-    <title>欢迎来到首页</title>
+    <title th:text="${sectionName}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/community.css">
-    <script src="js/jquery-3.4.1.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/jquery-3.4.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
 
 </head>
 <body>
 <div th:insert="navigation :: nav"></div>
-<div class="container-fluid main">
+<div class="container-fluid main profile">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发起</h2>
+            <h2 th:text="${sectionName}"></h2>
             <hr/>
+
             <div class="media" th:each="question : ${pagination.questions}">
                 <div class="media-left">
                     <a href="#">
@@ -39,26 +40,26 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li th:if="${pagination.showFirstPage}">
-                        <a href="/?page=1" aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${1})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
                     <li th:if="${pagination.showPrevious}">
-                        <a th:href="@{/(page=${pagination.page -1 })}" aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.page - 1})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
                     <li th:each="page : ${pagination.pages}" th:class="${pagination.page == page} ? 'active' : ''">
-                        <a th:href="@{/(page=${page})}"  th:text="${page}">
+                        <a th:href="@{'/profile/'+${section}(page=${page})}"  th:text="${page}">
                         </a>
                     </li>
                     <li th:if="${pagination.showNext}">
-                        <a th:href="@{/(page=${pagination.page + 1 })}" aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.page + 1})}" aria-label="Previous">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li th:if="${pagination.showEndPage}">
-                        <a th:href="@{/(page=${pagination.totalPage })}" aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.totalPage})}" aria-label="Previous">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>
@@ -67,18 +68,16 @@
 
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <h3>热门话题</h3>
-            HandlerMapping : Adding welcome page template: index
-            2019-11-02 13:20:46.948 INFO 7220 --- [ restartedMain] o.s.b.d.a.OptionalLiveReloadServer : LiveReload
-            server is running on port 35729
-            2019-11-02 13:20:47.043 INFO 7220 --- [ restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat
-            started on port(s): 8887 (http) with context path ''
-            2019-11-02 13:20:47.049 INFO 7220 --- [ restartedMain] l.m.community.CommunityApplication : Started
-            CommunityApplication in 7.506 seconds (JVM running for 9.966)
-            2019-11-02 15:06:48.941 INFO 7220 --- [ Thread-11] o.s.s.concurrent.ThreadPoolTaskExecutor : Shutting
-            down ExecutorService 'applicationTaskExecutor'
-            2019-11-02 15:06:48.942 INFO 7220 --- [ Thread-11] com.zaxxer.hikari.HikariDataSource : HikariPool-1 -
-            Shutdown initiated...
+            <div class="list-group section">
+                <a href="/profile/questions"   th:class="${section == 'questions'} ? 'list-group-item active' : 'list-group-item'">
+                    我的问题
+                    <span class="badge">14</span>
+                </a>
+                <a href="/profile/replies"   th:class="${section == 'replies'} ? 'list-group-item active' : 'list-group-item'">
+                    最新回复
+                    <span class="badge">14</span>
+                </a>
+            </div>
         </div>
     </div>
 
