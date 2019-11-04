@@ -2,9 +2,9 @@ package life.majiang.community.controller;
 
 import life.majiang.community.dto.AccessTokenDTO;
 import life.majiang.community.dto.GithubUser;
-import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.User;
 import life.majiang.community.provider.GithubProvider;
+import life.majiang.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,8 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider ;
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
+
     @Value("${github.client.id}")
     private String clientId;
     @Value("${github.client.secret}")
@@ -52,13 +53,14 @@ public class AuthorizeController {
             User user = new User();
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setMgtModified(System.currentTimeMillis());
+
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.inster(user);
+//            userMapper.inster(user);
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token",token));
+
 
 //            request.getSession().setAttribute("githubUser",githubUser);
             return "redirect:/";
@@ -67,4 +69,13 @@ public class AuthorizeController {
         }
 //        return "index";
     }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,HttpServletResponse response){
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
+
 }
