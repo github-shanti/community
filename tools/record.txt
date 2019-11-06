@@ -5,3 +5,18 @@ life/majiang/community/dto/QuestionDTO.java:11
 QQ群：705078805in
 地址:http:www.mawen.co
 https://github.com/googlehosts/hosts/
+
+mvn flyway:migrate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+
+
+
+多线程，实现 锁
+
+数据隔离级别，事务
+
+java 集合
+
+spring cloud 常用组件
+
+
