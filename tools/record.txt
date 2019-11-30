@@ -16,7 +16,7 @@ mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 数据隔离级别，事务
 
 java 集合
-
+jvm 内存模型  java内存模型
 spring cloud 常用组件
 
 

@@ -2,6 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="zh-CN">
 <head>
+    <script type="application/javascript">
+        window.onload = function () {
+            var closable = window.localStorage.getItem("closable");
+            if (closable == "true") {
+                window.close();
+                window.localStorage.removeItem("closable");
+            }
+        }
+    </script>
     <title>欢迎来到首页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -11,6 +20,7 @@
 
 </head>
 <body>
+
 <div th:insert="navigation :: nav"></div>
 <div class="container-fluid main">
     <div class="row">

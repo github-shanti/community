@@ -12,6 +12,7 @@
                         connectionURL="jdbc:h2:~/community"
                         userId="sa"
                         password="123">
+            <property name="useInformationSchema" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver >

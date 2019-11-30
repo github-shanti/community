@@ -25,13 +25,13 @@ public class QuestionService {
     private UserMapper userMapper;
     @Autowired
     private QuestionMapper questionMapper;
-  @Autowired
+    @Autowired
     private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         Integer totalPage;
 //        Integer totalCount = questionMapper.count();
-        Integer totalCount = (int)(questionMapper.countByExample(new QuestionExample()));
+        Integer totalCount = (int) (questionMapper.countByExample(new QuestionExample()));
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -49,7 +49,9 @@ public class QuestionService {
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         Integer offset = size * (page - 1);
 //        List<Question> questionList = questionMapper.list(offset, size);
-        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
         if (null != questionList) {
             for (Question question : questionList) {
                 User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -70,7 +72,7 @@ public class QuestionService {
 //        Integer totalCount = questionMapper.countByUserId(userId);
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(userId);
-        Integer totalCount = (int)questionMapper.countByExample(example);
+        Integer totalCount = (int) questionMapper.countByExample(example);
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -116,7 +118,7 @@ public class QuestionService {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
 
-        BeanUtils.copyProperties(question,questionDTO);
+        BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
